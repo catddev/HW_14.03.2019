@@ -80,9 +80,56 @@ int main()
 			//Шифрованный текст : Фэзыя йз зьи ахлш пвёнлш чугрщцкфнлш дцосн, жг еютзм ъгб.
 			//Дан текстовый файл.Зашифровать его, используя шифр Цезаря.Результат записать в другой файл.
 		{
-			//ifstream i3_file("3.txt");
-			fstream i3_file("3.txt");
+			ifstream i3_file("3.txt");
 			ofstream i4_file("4.txt");
+			char sym;
+			int key;
+			cout << "Enter the key" << endl;
+			cin >> key;
+			int period;
+			char start;
+
+			while (i3_file.get(sym))
+			{
+				if (sym >= 'А' && sym <= 'Я')
+				{
+					period = 'Я' - 'А';
+					start = 'А';
+				}
+				else if (sym >= 'а' && sym <= 'я')
+				{
+					period = 'я' - 'а';
+					start = 'а';
+				}
+				else if (sym >= 'A' && sym <= 'Z')
+				{
+					period = 'Z' - 'A';
+					start = 'A';
+				}
+				else if (sym >= 'a' && sym <= 'z')
+				{
+					period = 'z' - 'a';
+					start = 'a';
+				}
+				else
+				{
+					i4_file << sym;
+					continue;
+				}
+
+				if (sym + key - start <= period)
+					sym = sym + key;
+				else
+					sym = sym + key - period - 1;
+
+				i4_file << sym;
+			}
+		}
+		break;
+		case 3: // можно через свой алфавитный чар-массив, т.к. в ASCII таблице нет Ё, поэтому вывод не совсем как в задании
+		{
+			fstream i5_file("5.txt");
+			ofstream i6_file("6.txt");
 			//чтобы зациклить алфавит придется не через таблицу ASCII кодов, а через свой массив символов
 			char alphabet[34] = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
 			char sym;
@@ -91,7 +138,7 @@ int main()
 			cin >> key;
 			//cin.ignore();
 
-			while (i3_file.get(sym))
+			while (i5_file.get(sym))
 			{
 				for (int i = 0; i <= 33; i++)
 				{
@@ -100,26 +147,25 @@ int main()
 						if (i + key <= 32)
 						{
 							sym = alphabet[i + key];
-							i4_file << sym;
+							i6_file << sym;
 							break;
 						}
 						else
 						{
 							sym = alphabet[i + key - 33];
-							i4_file << sym;
+							i6_file << sym;
 							break;
 						}
 					}
 					else if (i == 33)
 					{
-						i4_file << sym;
+						i6_file << sym;
 						break;
 					}
 				}
 			}
 
 			// почему-то на github в файлах не видно русского текста, только через visual studio
-			// видимо при чтении из массива чтото с кодировкой
 		}
 		break;
 		default:
